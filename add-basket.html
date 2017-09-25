@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+   <title>OVERSTIM.s - Trail</title>
+
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">   
+   <meta name="description" content="">
+   <meta name="author" content="">
+
+   <link rel="shortcut icon" href="images/favicon.png">
+<!--
+	<script src="js/pace.min.js"></script>
+    <link href="css/pace.css" rel="stylesheet">
+-->
+   
+   <!-- Bootstrap core CSS -->
+   <link href="css/bootstrap.css" rel="stylesheet">
+   
+   <!-- Custom styles for this template -->
+   <link href="css/bootstrap-select.css" rel="stylesheet">
+   <link href="css/grid.css" rel="stylesheet">
+
+   <script src="js/jquery.min.js"></script>   
+
+   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+   
+</head>
+
+<body>
+
+   <div class="container">
+      <div class="row" id="no-margin">
+         <div class="col-xs-4" style="padding-left: 0">
+            <img class="img-responsive img-center" src="images/gatosport-list.png" alt="Gatosport">           
+         </div>
+         <div class="col-xs-8" style="padding-right: 0">
+            <div class="add-cart-descritpif-container">
+               <div class="name">Gatosport</div>
+               <div class="attribute">G&acirc;teau &eacute;nerg&eacute;tique (bo&icirc;te 400g)</div>
+               <div class="attribute">Banane - chocolat</div>
+               <div class="attribute quantity">Qt&eacute; : 1</div>
+               <div class="etat-stock"><span class="glyphicon glyphicon-ok" id="check"></span><span class="enstock">En stock - Livraison sous 48/72h</span></div>               
+               <div class="message">Plus que 13,13 &euro; d'achat pour b&eacute;n&eacute;ficier de la Livraison GRATUITE</div>
+            </div>            
+         </div>
+      </div>
+   </div>
+
+   
+
+   
+
+
+   <!--SCROLL TO TOP -->
+   <!--
+   <div class="uparrow" id="uparrow"></div>
+   -->
+
+   <script src="js/bootstrap.js"></script>
+   <script src="js/jquery.smint.js"></script>
+   <script src="js/jquery.mobile.custom.min.js"></script>
+   <script src="js/bootstrap-select.js"></script>
+
+   <script src="js/jquery.bootpag.min.js"></script>   
+   <script src="js/mustache.js"></script> 
+   <!--<script src="js/tabcordion.js"></script>-->
+   <script src="js/bootstrap-tabcollapse.js"></script>      
+
+    
+   
+   <script>
+      $(function() {
+         //$('.tabcordion').tabcordion({breakWidth: 767});    
+         $('#tabs').tabCollapse();         
+      });
+   </script>
+   
+   <!--
+   <script>
+           $(window).load(function() { // makes sure the whole site is loaded
+               $('#status').fadeOut(); // will first fade out the loading animation
+               $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+               $('body').delay(350).css({'overflow':'visible'});
+           })
+   </script>  
+   -->
+   
+    <script>
+       // init bootpag
+        $('#page-selection').bootpag({
+            total: 10,
+            page: 1,
+            maxVisible: 5,
+            leaps: false
+           /*prev : "&laquo; Pr&eacute;c.",
+           next : "Suiv. &raquo;"*/
+        }).on("page", function(event, /* page number here */ num){
+             var activePage = $("#content" + num);
+             var currentPage = activePage.parent().find('.page-visible');
+             currentPage.removeClass( "page-visible" ).addClass( "page-hidden" );
+             activePage.removeClass( "page-hidden" ).addClass( "page-visible" );
+        });
+    </script>  
+   
+   
+   <script>
+      $(document).ready(function() {
+         if (isMobile())
+         {
+            $('.select-reference').selectpicker('mobile');
+            $('.select-quantite').selectpicker('mobile');
+         }
+         else
+         {
+            $('.select-reference').selectpicker();
+            $('.select-quantite').selectpicker();
+         }
+      });
+   </script>    
+   
+   <script type="text/javascript">
+        
+        $(document).ready(function() {
+        
+            var listElement = $('#newStuff');
+            var perPage = 4; 
+            var numItems = listElement.children().size();
+            var numPages = Math.ceil(numItems/perPage);
+
+            $('.pager').data("curr",0);
+
+            var curr = 0;
+            while(numPages > curr){
+              $('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo('.pager');
+              curr++;
+            }
+
+            $('.pager .page_link:first').addClass('active');
+
+            listElement.children().css('display', 'none');
+            listElement.children().slice(0, perPage).css('display', 'block');
+
+            $('.pager li a').click(function(){
+              var clickedPage = $(this).html().valueOf() - 1;
+              goTo(clickedPage,perPage);
+            });
+
+            function previous(){
+              var goToPage = parseInt($('.pager').data("curr")) - 1;
+              if($('.active').prev('.page_link').length==true){
+                goTo(goToPage);
+              }
+            }
+
+            function next(){
+              goToPage = parseInt($('.pager').data("curr")) + 1;
+              if($('.active_page').next('.page_link').length==true){
+                goTo(goToPage);
+              }
+            }
+
+            function goTo(page){
+              var startAt = page * perPage,
+                endOn = startAt + perPage;
+
+              listElement.children().css('display','none').slice(startAt, endOn).css('display','block');
+              $('.pager').attr("curr",page);
+            }
+        
+        });
+        
+        </script>
+   
+
+   <script>
+      $('#tabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+   </script>  
+   
+   
+   <script>
+      
+   function isMobile() 
+   {
+       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+       {
+          return true;
+       } else {
+          return false;
+       }
+   }
+      
+      
+   $(document).ready(function() {
+      
+       var fullNavOffset = 86;
+       var mobileNavOffset = 0;
+       var fullScreenImg = true; // First Slide Full Screen
+       var fullScreenSlideId = '.sport-header';
+       var logoScrollToTop = true;
+       var mobileMenuWidth = 730;
+       var carouselMouseActive = false;
+       var preLoaded = false;
+      
+       // Add mobile class
+       if (isMobile()) {
+           $('body').addClass('ismobile');
+       }
+      
+      function getStickyHeight() 
+      {
+         var dittoMobile = $('.menu-mobile');
+         var dittoMenu = $('.sticky-menu');
+         if (isMobileMenu()) 
+         {
+            var menuHeight = dittoMobile.height();
+         } else {
+            var menuHeight = dittoMenu.height();
+         }
+         return menuHeight;
+      }
+
+      function isMobileMenu() 
+      {
+         var windowWidth = $(window).width();
+         var isMobileMenu = false;
+         if (windowWidth < mobileMenuWidth) 
+         {
+            isMobileMenu = true;
+         }
+         return isMobileMenu;
+      }      
+
+      function resizeFold() 
+      {
+         var windowHeight = $(window).height();
+         
+         var mainMenu = $('#header');
+         menuHeight = mainMenu.height();
+         
+         stickyHeight = getStickyHeight();
+
+         newHeight = windowHeight - stickyHeight - menuHeight;
+         if (newHeight < 400) newHeight = 400;
+         
+         $(fullScreenSlideId).css({ height: newHeight });
+      }      
+      
+      if (fullScreenImg) 
+      {
+         resizeFold();
+      }
+	
+      $(window).resize(function() {
+         if (fullScreenImg) 
+         {
+            resizeFold();
+         }
+      });      
+      
+      $(window).scroll(function() {      
+         if (fullScreenImg) 
+         {
+            resizeFold();
+         }
+      });      
+      
+   });
+   
+   </script>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   <!-- Permet de rendre tactile le Carousel Bootstrap avec jquery.mobile.custom.min.js  -->
+   <script>
+      $(document).ready(function() {
+         $("#myCarousel").swiperight(function() {
+            $("#myCarousel").carousel('prev');
+          });
+         $("#myCarousel").swipeleft(function() {
+            $("#myCarousel").carousel('next');
+         });
+      });
+   </script>
+
+   <!-- Permet au Carousel Bootstrap de fonctionner normalement avec IE  -->
+   <!--[if lte IE 9]>       
+       <script src="js/ie-bootstrap-carousel.min.js"></script>
+   <![endif]-->
+
+   <!-- Animation scroll pour acceder aux ancres HTML  -->
+   <script>
+      $(function() {
+      		  $('a[href=#detail-anchor-avis]').click(function() {
+               
+               // Ouvre quand onglet tab
+               $('#tabs a[href=#avis-utilisateurs]').tab('show');
+                 
+               // Ouvre quand acordion en simulant le clic sur le lien  
+               $('a[href=#avis-utilisateurs-collapse]').click();              
+      			
+               if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+      				|| location.hostname == this.hostname) {
+      			  var target = $('#detail-anchor');
+      			  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      			  if (target.length) {
+                  
+      				$('html,body').animate({
+      				  scrollTop: target.offset().top
+      				}, 800);
+      				return false;
+      			  }
+      			}
+      		  });
+      		});
+   </script>
+   
+   <script>
+      $(function() {
+      		  $('a[href=#detail-anchor-description]').click(function() {
+               
+               $('#tabs a[href=#description]').tab('show');
+      			
+               if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+      				|| location.hostname == this.hostname) {
+      			  var target = $('#detail-anchor');
+      			  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      			  if (target.length) {
+                  
+      				$('html,body').animate({
+      				  scrollTop: target.offset().top
+      				}, 800);
+      				return false;
+      			  }
+      			}
+      		  });
+      		});
+   </script>   
+
+   <script>
+      /*
+      $(document).ready(function() {
+      			$('.wrapper').mouseenter(function(e) {
+      				$(this).children('span').fadeIn(200);
+      			}).mouseleave(function(e) {
+      				$(this).children('span').fadeOut(200);
+      			});
+      		});
+      */            
+   </script>
+
+   <!-- Scroll vers haut de la page -->
+   <script type="text/javascript">
+      $(document).ready(function(){
+      			// fade in and fade out
+      			$(function () {
+      				$(window).scroll(function () {
+      					if ($(this).scrollTop() > 150) {
+      						$('#uparrow').fadeIn();
+      					} else {
+      						$('#uparrow').fadeOut();
+      					}
+      				});
+      
+      				// scroll body to 0px on click
+      				$('#uparrow').click(function () {
+      					$('body,html').animate({
+      						scrollTop: 0
+      					}, 800);
+      					return false;
+      				});
+      			});
+      
+      		});
+      		
+      		$('.divider').tooltip({
+      		  selector: "[data-toggle=tooltip]",
+      		  container: "body"
+      		});
+   </script>
+
+   <!-- Gestion de la promobar en haut -->
+   <script>
+      $(document).ready(function() {
+      			var promoBar = $('.promobar');
+      			var promoClose = $('.promoclose');
+      			var promoBarRestore = $('#promobarrestore');
+      
+      			if (promoBar.length > 0)
+      			{
+      				promoClose.on('click', function() {
+      					promoBar.removeClass('active');
+      					promoBarRestore.addClass('active');
+      				});
+      
+      				promoBarRestore.on('click', function() {
+      					promoBarRestore.removeClass('active');
+      					promoBar.addClass('active');
+      				});
+      			}
+      		});
+   </script>
+
+   <!-- Sport top produit : Ajuste les tailles des div à celle la plus haute -->
+   <script>
+      function adjustTopProductHeights() {
+        boxesProduct = $('.top-product-same-height');
+        maxHeight = Math.max.apply(
+          Math, boxesProduct.map(function() {
+          return $(this).height();
+        }).get());
+        boxesProduct.height(maxHeight);
+      }
+
+      $(document).ready(function() {
+        adjustTopProductHeights();
+        $(window).resize(adjustTopProductHeights);
+      });
+   </script>
+
+   <!-- Sport Conseils/Videos : Ajuste les tailles des div texte à celle des photos -->
+   <script>
+      function adjustHeights(selector) {
+        boxe = $(selector).parent().siblings('.same-height');
+        if (boxe != null) {
+           if ($(selector).height() > 0)
+           {
+              boxe.height($(selector).height());
+           }
+        }
+      }
+
+      function adjustAllHeights() {
+        photos = $('.photo-height');
+        boxes = $('.same-height');
+         if (photos.height() > 0)
+         {
+            boxes.height(photos.height());
+         }
+      }
+
+      var onImgLoad = function(selector){
+          $(selector).each(function(){
+              if (this.complete || /*for IE 10-*/ $(this).height() > 0) {
+                  adjustHeights(this);
+              }
+              else {
+                  $(this).on('load', function(){
+                      adjustHeights(this);
+                  });
+              }
+          });
+      };
+
+      $(document).ready(function() {
+        onImgLoad($('.photo-height'));
+        $(window).resize(adjustAllHeights);
+      });
+   </script>
+
+   <!-- Si Skype sur le poste alors les numeros de telephone ne change pas -->
+   <script>
+      $(document).ready(function() {
+          window.setTimeout(function() {
+              $('.skype_pnh_container').html('');
+              $('.skype_pnh_print_container').removeClass('skype_pnh_print_container');
+          }, 800);
+        });
+   </script>
+
+   <!-- Animation ouverture/fermeture des menus -->
+   <script>
+      // ADD SLIDEDOWN ANIMATION TO DROPDOWN //
+      $('.dropdown').on('show.bs.dropdown', function(e){
+          $(this).find('.dropdown-menu').first().stop(true, true).slideDown(200);
+      });
+
+      // ADD SLIDEUP ANIMATION TO DROPDOWN //
+      $('.dropdown').on('hide.bs.dropdown', function(e){
+          $(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
+      });
+   </script>
+
+   <!-- Met le focus sur le champ recherche -->
+   <script>
+      $(function() {	
+         $('#search').on('show.bs.dropdown', function () {
+            var inputField = $(this).find("input:text").first();
+            var x = setTimeout(function(){inputField.focus()}, 100);
+         });
+      });
+   </script>
+
+   <!-- Le menu ne se referme pas si on clqiue sur le champ de recherche -->
+   <script>
+      $(function() {
+         // FIX INPUT ELEMENT CLICK PROBLEM IN DROPDOWN MENU
+         $('.dropdown input, .dropdown label').click(function(e) {
+            e.stopPropagation();
+         });
+      });
+   </script>
+
+   <!-- Sticky bar sport -->
+   <script>
+      $(document).ready( function() {
+            $('.sticky-menu').smint({
+            	'scrollSpeed' : 800
+            });
+        });
+   </script>
+   
+
+</body>
+
+</html>
